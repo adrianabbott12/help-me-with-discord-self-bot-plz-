@@ -1,0 +1,64 @@
+    "description": "give a fuck, or not, or sike them out!",
+    "usage": "<Optional|-y|-sy>",
+    "run": function(client, msg, args, config) {
+		msg.edit(`:repeat: Attempting to give a fuck, please wait...`)
+            if (msg.content.indexOf('-y') >= 0) {
+                setTimeout(function myFunction() {
+                    msg.edit(":white_check_mark: Successfully gave a fuck.")
+                }, 5000)
+            } else if (msg.content.indexOf('-sy') >= 0) {
+                setTimeout(function myFunction() {
+                    msg.edit(":white_check_mark: Successfully gave a fuck.")
+                    setTimeout(function myFunction() {
+                        msg.edit(":negative_squared_cross_mark: SIKE! Ofcourse I don't give a fuck.")
+                    }, 2000)
+                }, 5000)
+            } else {
+                setTimeout(function myFunction() {
+                    msg.edit(":negative_squared_cross_mark: Failed to give a fuck.")
+                }, 5000)
+            }
+
+    }
+}
+module.exports = {
+    "name":"kick",
+    "description": "kick a person!",
+    "usage": "<@mention>",
+    "run": function(client, msg, args, config) {
+		client.deleteGuildMember(msg.channel.guild.id, msg.mentions[0].id).catch(function(e) {
+			msg.edit(`:warning: Failed to kick ${msg.mentions[0].username}!`)
+        });
+    }
+}
+var pingResp = require('../util/pingResp.json')
+
+module.exports = {
+    "name":"ping",
+    "description": "PONG!",
+    "usage": "",
+    "run": function(client, msg, args, config) {
+		  msg.edit(`${pingResp[Math.floor((Math.random() * pingResp.length))]} | ${msg.channel.guild.shard.latency}ms.`);
+    }
+}
+module.exports = {
+    "name":"nick",
+    "description": "name yourself a thing on a server!",
+    "usage": "<nickname>",
+    "run": function(client, msg, args, config) {
+		var text = msg.content.substring(config.prefix.length + this.name.length + 1, 9999)
+		msg.edit(msg.member.nick + " => " + text, () => {
+			client.editNickname(msg.channel.guild.id, text)
+        });
+    }
+}
+module.exports = {
+    "name":"ban",
+    "description": "ban a thing!",
+    "usage": "<@mention>",
+    "run": function(client, msg, args, config) {
+		client.banGuildMember(msg.channel.guild.id, msg.mentions[0].id).catch(function(e) {
+			client.createMessage(msg.channel.id, `Failed to kick ${msg.mentions[0].mention}`)
+        });
+    }
+}
